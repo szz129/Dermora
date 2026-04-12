@@ -74,3 +74,5 @@ Thumbs.db
 .idea/
 .vscode/
 
+venv311/
+backend/ai-service/models/
