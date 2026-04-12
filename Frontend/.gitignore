@@ -1,0 +1,9 @@
+node_modules/
+.expo/
+dist/
+web-build/
+.env*
+
+# @generated expo-cli
+expo-env.d.ts
+# @end expo-cli
