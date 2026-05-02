@@ -387,6 +387,146 @@ async def analyze_skin_test(image_path: Optional[str] = Query(None, description=
         raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Dermatologists Nearby Endpoint
+# ─────────────────────────────────────────────────────────────────────────────
+
+import math
+
+DERMATOLOGISTS_DB = [
+    {
+        "id": "1",
+        "name": "Dr. Ayesha Khan",
+        "specialty": "Dermatologist & Cosmetologist",
+        "rating": 4.8,
+        "reviews": 156,
+        "address": "Gulberg III, Lahore",
+        "phone": "+92 300 1234567",
+        "availability": "Available Today",
+        "experience": "12 years",
+        "consultationFee": "Rs. 2,500",
+        "services": ["Acne Treatment", "Anti-Aging", "Laser Therapy", "Chemical Peels"],
+        "latitude": 31.5204,
+        "longitude": 74.3587,
+    },
+    {
+        "id": "2",
+        "name": "Dr. Muhammad Ali",
+        "specialty": "Dermatologist",
+        "rating": 4.6,
+        "reviews": 89,
+        "address": "DHA Phase 5, Lahore",
+        "phone": "+92 301 2345678",
+        "availability": "Next Available: Tomorrow",
+        "experience": "8 years",
+        "consultationFee": "Rs. 2,000",
+        "services": ["Skin Cancer Screening", "Psoriasis Treatment", "Eczema Care"],
+        "latitude": 31.4794,
+        "longitude": 74.4073,
+    },
+    {
+        "id": "3",
+        "name": "Dr. Fatima Sheikh",
+        "specialty": "Dermatologist & Aesthetic Medicine",
+        "rating": 4.9,
+        "reviews": 203,
+        "address": "Johar Town, Lahore",
+        "phone": "+92 302 3456789",
+        "availability": "Available Today",
+        "experience": "15 years",
+        "consultationFee": "Rs. 3,000",
+        "services": ["Botox", "Fillers", "Skin Rejuvenation", "Scar Treatment"],
+        "latitude": 31.4697,
+        "longitude": 74.3006,
+    },
+    {
+        "id": "4",
+        "name": "Dr. Hassan Ahmed",
+        "specialty": "Pediatric Dermatologist",
+        "rating": 4.7,
+        "reviews": 124,
+        "address": "Model Town, Lahore",
+        "phone": "+92 303 4567890",
+        "availability": "Next Available: 2 days",
+        "experience": "10 years",
+        "consultationFee": "Rs. 2,200",
+        "services": ["Pediatric Skin Conditions", "Birthmark Treatment", "Allergy Testing"],
+        "latitude": 31.4822,
+        "longitude": 74.3248,
+    },
+    {
+        "id": "5",
+        "name": "Dr. Zara Malik",
+        "specialty": "Dermatologist & Hair Specialist",
+        "rating": 4.5,
+        "reviews": 167,
+        "address": "Cantt, Lahore",
+        "phone": "+92 304 5678901",
+        "availability": "Available Today",
+        "experience": "9 years",
+        "consultationFee": "Rs. 2,300",
+        "services": ["Hair Loss Treatment", "Scalp Conditions", "Nail Disorders"],
+        "latitude": 31.5497,
+        "longitude": 74.3695,
+    },
+]
+
+
+def _haversine_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+    """Calculate distance between two lat/lon points in kilometres."""
+    R = 6371.0
+    dlat = math.radians(lat2 - lat1)
+    dlon = math.radians(lon2 - lon1)
+    a = math.sin(dlat / 2) ** 2 + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(dlon / 2) ** 2
+    return round(R * 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a)), 2)
+
+
+class DermatologistResponse(BaseModel):
+    id: str
+    name: str
+    specialty: str
+    rating: float
+    reviews: int
+    distance_km: float
+    address: str
+    phone: str
+    availability: str
+    experience: str
+    consultationFee: str
+    services: list[str]
+    latitude: float
+    longitude: float
+
+
+@app.get("/dermatologists/nearby", response_model=list[DermatologistResponse])
+async def get_nearby_dermatologists(
+    lat: float = Query(..., description="User latitude"),
+    lon: float = Query(..., description="User longitude"),
+    radius_km: float = Query(50.0, description="Search radius in kilometres"),
+    sort_by: str = Query("distance", description="Sort by: distance | rating"),
+    available_today: bool = Query(False, description="Filter to only available-today doctors"),
+):
+    """
+    Return dermatologists within radius_km of the given coordinates,
+    sorted by distance (default) or rating.
+    """
+    results = []
+    for doc in DERMATOLOGISTS_DB:
+        dist = _haversine_km(lat, lon, doc["latitude"], doc["longitude"])
+        if dist <= radius_km:
+            if available_today and "Available Today" not in doc["availability"]:
+                continue
+            results.append({**doc, "distance_km": dist})
+
+    if sort_by == "rating":
+        results.sort(key=lambda d: d["rating"], reverse=True)
+    else:
+        results.sort(key=lambda d: d["distance_km"])
+
+    logger.info(f"Nearby dermatologists query: lat={lat}, lon={lon}, radius={radius_km}km → {len(results)} results")
+    return results
+
+
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 8000))
     host = os.getenv("HOST", "0.0.0.0")
