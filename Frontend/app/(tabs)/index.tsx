@@ -1,10 +1,17 @@
 import React from "react";
+<<<<<<< HEAD
 import { LinearGradient } from 'expo-linear-gradient';
+=======
+>>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
 import { useFocusEffect } from 'expo-router';
 import { useCallback } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions, SafeAreaView } from "react-native";
 import Svg, { Circle } from "react-native-svg";
+<<<<<<< HEAD
 import { Clock, Maximize, ChevronRight, Sun, Moon, Calendar, Edit2, Droplets, Sparkles, Shield } from "lucide-react-native";
+=======
+import { Clock, Lightbulb, Maximize, ChevronRight, Sun, Moon, Calendar } from "lucide-react-native";
+>>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
 import { router } from "expo-router";
 import { useSkincareStore } from "../../hooks/use-skincare-store-supabase";
 import { useAuth } from "../../hooks/use-auth";
@@ -19,7 +26,10 @@ const COLORS = {
   textMain: "#4A3232",
   textSub: "#7D5A5A",
   white: "#FFFFFF",
+<<<<<<< HEAD
   cardBorder: "#FADADD",
+=======
+>>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
 };
 
 const CONDITION_LABELS: Record<string, string> = {
@@ -43,7 +53,11 @@ const MONTHS = ["January","February","March","April","May","June","July","August
 const DAYS_SHORT = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 
 export default function HomeScreen() {
+<<<<<<< HEAD
   const { userProfile, recommendations, getHealthScore, getCurrentCyclePhase, skinAnalyses, refreshRecommendations, cycleStatus } = useSkincareStore();
+=======
+  const { userProfile, recommendations, getHealthScore, getCurrentCyclePhase, skinAnalyses, refreshRecommendations } = useSkincareStore();
+>>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
   const { user } = useAuth();
 
   const skinHealth = getHealthScore() || 70;
@@ -84,6 +98,7 @@ export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+<<<<<<< HEAD
         <LinearGradient
           colors={['#FFB6C1', '#FFE4E9', '#FFFBF5']}
           start={{ x: 0, y: 0 }}
@@ -96,6 +111,14 @@ export default function HomeScreen() {
           </View>
 
           <View style={styles.progressSection}>
+=======
+        <View style={styles.topHeader}>
+          <Text style={styles.greeting}>Hey {userName}!</Text>
+          <Text style={styles.welcomeSub}>Let's check your skin today.</Text>
+        </View>
+
+        <View style={styles.progressSection}>
+>>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
           <View style={{ alignItems: 'center', justifyContent: 'center' }}>
             <Svg height="200" width="200" viewBox="0 0 200 200">
               <Circle cx="100" cy="100" r={radius} stroke="#FFF0F3" strokeWidth="15" fill="none" />
@@ -107,7 +130,10 @@ export default function HomeScreen() {
             </View>
           </View>
         </View>
+<<<<<<< HEAD
         </LinearGradient>
+=======
+>>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
 
         <View style={styles.ageBadge}>
           <Text style={styles.ageText}>{conditionLabel ? `Detected: ${conditionLabel}` : "Scan to detect condition"}</Text>
@@ -127,6 +153,7 @@ export default function HomeScreen() {
           <View style={[styles.routineCard, recommendations.length === 0 && { backgroundColor: '#F5F5F5' }]}>
             <View style={styles.routineList}>
               {recommendations.length > 0 ? (
+<<<<<<< HEAD
                 recommendations.slice(0, 4).map((rec, idx) => {
                   const icons = [Droplets, Sparkles, Shield, Sun];
                   const Icon = icons[idx] || Sparkles;
@@ -146,6 +173,13 @@ export default function HomeScreen() {
                   </View>
                   <Text style={[styles.routineItemText, { opacity: 0.5 }]}>Complete quiz to see routine</Text>
                 </View>
+=======
+                recommendations.slice(0, 4).map((rec, idx) => (
+                <Text key={idx} style={styles.routineItem}>• {rec.product_name || rec.name}</Text>
+              ))
+              ) : (
+                <Text style={[styles.routineItem, { opacity: 0.5 }]}>Complete quiz to see routine</Text>
+>>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
               )}
             </View>
             <TouchableOpacity style={styles.viewAllBtn} onPress={() => router.push("/products")}>
@@ -170,6 +204,7 @@ export default function HomeScreen() {
         </View>
 
         <View style={styles.periodBanner}>
+<<<<<<< HEAD
           <View style={{ flex: 1 }}>
             <Text style={styles.periodBannerText}>
               {cycleStatus?.has_data
@@ -193,10 +228,16 @@ export default function HomeScreen() {
           >
             <Edit2 size={14} color={COLORS.textSub} />
           </TouchableOpacity>
+=======
+          <Text style={styles.periodBannerText}>
+            Your mood and skin are affected by the <Text style={{ fontWeight: 'bold' }}>{currentPhase}</Text> phase.
+          </Text>
+>>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
         </View>
 
         <View style={styles.actionsContainer}>
           <TouchableOpacity style={styles.actionItem} onPress={() => router.push("/cycle")}>
+<<<<<<< HEAD
             <Clock size={22} color={COLORS.primaryPink} />
             <Text style={styles.actionItemText}>
               {cycleStatus?.current_phase
@@ -208,6 +249,18 @@ export default function HomeScreen() {
           <TouchableOpacity style={styles.actionItem} onPress={() => router.push("/scanner")}>
             <Maximize size={22} color={COLORS.primaryPink} />
             <Text style={styles.actionItemText}>View Scan Insights</Text>
+=======
+            <Clock size={22} color={COLORS.accentRed} />
+            <Text style={styles.actionItemText}>{currentPhase} Phase Tracking</Text>
+          </TouchableOpacity>
+          <View style={styles.actionItem}>
+            <Lightbulb size={22} color={COLORS.accentRed} />
+            <Text style={styles.actionItemText}>{cycleTip}</Text>
+          </View>
+          <TouchableOpacity style={styles.actionItem} onPress={() => router.push("/scanner")}>
+            <Maximize size={22} color={COLORS.accentRed} />
+            <Text style={styles.actionItemText}>See Scan's insights</Text>
+>>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
             <ChevronRight size={20} color="#CCC" />
           </TouchableOpacity>
         </View>
@@ -219,7 +272,11 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   safeArea: { flex: 1, backgroundColor: COLORS.background },
   scrollContent: { paddingBottom: 150 },
+<<<<<<< HEAD
   topHeader: { paddingHorizontal: 25, marginTop: 20, marginBottom: 10, paddingTop: 10 },
+=======
+  topHeader: { paddingHorizontal: 25, marginTop: 20, marginBottom: 10 },
+>>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
   greeting: { fontSize: 28, fontWeight: '800', color: COLORS.textMain },
   welcomeSub: { fontSize: 16, color: COLORS.textSub, marginTop: 4 },
   progressSection: { alignItems: "center", justifyContent: "center", marginTop: 10, position: 'relative', width: '100%' },
@@ -234,12 +291,19 @@ const styles = StyleSheet.create({
   routineHeader: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 10, marginBottom: 20 },
   sectionTitle: { fontSize: 14, fontWeight: "700", color: COLORS.textMain, textAlign: 'center', letterSpacing: 1 },
   routineIcon: { opacity: 0.8 },
+<<<<<<< HEAD
   routineCard: { backgroundColor: COLORS.white, borderRadius: 20, padding: 20, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderWidth: 1, borderColor: COLORS.cardBorder, shadowColor: "#000", shadowOpacity: 0.04, shadowRadius: 8, elevation: 2 },
   routineList: { gap: 8, flex: 1 },
   routineItem: { fontSize: 16, color: COLORS.textMain, fontWeight: '500' },
   routineItemRow: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 5 },
   routineItemIconBox: { width: 32, height: 32, borderRadius: 10, backgroundColor: COLORS.secondaryPink, justifyContent: 'center', alignItems: 'center' },
   routineItemText: { fontSize: 14, color: COLORS.textMain, fontWeight: '600', flex: 1 },
+=======
+  routineCard: { backgroundColor: COLORS.secondaryPink, borderRadius: 20, padding: 20, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  routineList: { gap: 8, flex: 1 },
+  routineItem: { fontSize: 16, color: COLORS.textMain, fontWeight: '500' },
+  viewAllBtn: { padding: 5 },
+>>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
   calendarHeader: { paddingHorizontal: 25, marginTop: 40, flexDirection: 'row', alignItems: 'center' },
   calendarTitle: { fontSize: 16, fontWeight: '600', color: COLORS.textMain },
   calendarRow: { flexDirection: 'row', justifyContent: 'space-evenly', paddingHorizontal: 10, marginTop: 15 },
@@ -249,6 +313,7 @@ const styles = StyleSheet.create({
   dayText: { fontSize: 13, color: COLORS.textMain, fontWeight: '600' },
   selectedDay: { backgroundColor: COLORS.accentRed },
   selectedDayText: { color: '#FFF' },
+<<<<<<< HEAD
   periodBanner: { 
     backgroundColor: COLORS.primaryPink, 
     marginHorizontal: 25, marginTop: 20, 
@@ -274,4 +339,11 @@ const styles = StyleSheet.create({
   },
   editCycleBtnText: { fontSize: 16 },
   viewAllBtn: { padding: 5 },
+=======
+  periodBanner: { backgroundColor: COLORS.secondaryPink, marginHorizontal: 25, marginTop: 20, padding: 16, borderRadius: 15, alignItems: 'center', borderWidth: 1, borderColor: '#FADADD' },
+  periodBannerText: { fontSize: 14, color: COLORS.textMain, textAlign: 'center', lineHeight: 20 },
+  actionsContainer: { marginTop: 25, paddingHorizontal: 25, gap: 12 },
+  actionItem: { backgroundColor: COLORS.white, padding: 18, borderRadius: 18, flexDirection: 'row', alignItems: 'center', shadowColor: "#000", shadowOpacity: 0.03, shadowRadius: 10, elevation: 2 },
+  actionItemText: { flex: 1, marginLeft: 15, fontSize: 16, color: COLORS.textMain, fontWeight: '500' },
+>>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
 });

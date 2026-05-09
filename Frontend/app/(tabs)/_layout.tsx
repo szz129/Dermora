@@ -1,15 +1,25 @@
 import { Tabs } from "expo-router";
+<<<<<<< HEAD
 import { Home, Maximize, Calendar, User, Smile, Stethoscope } from "lucide-react-native";
+=======
+import { Home, Maximize, Calendar, User, Smile } from "lucide-react-native";
+>>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
 import React, { useRef, useEffect } from "react";
 import { View, Animated, Dimensions, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const ICONS = [
   { name: "index", icon: Home, label: "Home" },
+<<<<<<< HEAD
   { name: "scanner", icon: Maximize, label: "Scan" },
   { name: "cycle", icon: Calendar, label: "Cycle" },
   { name: "doctors", icon: Stethoscope, label: "Doctors" },
   { name: "products", icon: Smile, label: "Routine" },
+=======
+  { name: "scanner", icon: Maximize, label: "Scan" }, 
+  { name: "cycle", icon: Calendar, label: "Cycle" },
+  { name: "products", icon: Smile, label: "Products" }, 
+>>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
   { name: "profile", icon: User, label: "Profile" },
 ];
 
@@ -91,6 +101,10 @@ export default function TabLayout() {
             }}
           />
         ))}
+<<<<<<< HEAD
+=======
+        <Tabs.Screen name="doctors" options={{ href: null }} />
+>>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
       </Tabs>
     </View>
   );

@@ -13,6 +13,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import {
   ChevronRight,
   Moon,
+<<<<<<< HEAD
+=======
+  Camera,
+>>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
   User,
   History,
 } from "lucide-react-native";
@@ -41,11 +45,19 @@ const CONDITION_LABELS: Record<string, string> = {
 
 export default function ProfileScreen() {
   const { user, signOut, loading: authLoading } = useAuth();
+<<<<<<< HEAD
   const { userProfile, skinAnalyses, getCurrentCyclePhase, getHealthScore, cycleStatus } = useSkincareStore();
   const [notificationsEnabled, setNotificationsEnabled] = React.useState<boolean>(true);
 
   const healthScore = getHealthScore();
   const currentPhase = cycleStatus?.current_phase || getCurrentCyclePhase();
+=======
+  const { userProfile, skinAnalyses, getCurrentCyclePhase, getHealthScore } = useSkincareStore();
+  const [notificationsEnabled, setNotificationsEnabled] = React.useState<boolean>(true);
+
+  const healthScore = getHealthScore();
+  const currentPhase = getCurrentCyclePhase();
+>>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
 
   const latestScan = skinAnalyses && skinAnalyses.length > 0 ? skinAnalyses[0] : null;
   const latestCondition = latestScan?.concerns?.[0] || null;
@@ -89,6 +101,12 @@ export default function ProfileScreen() {
             <View style={styles.avatarPlaceholder}>
               <User color={COLORS.primaryPink} size={40} />
             </View>
+<<<<<<< HEAD
+=======
+            <TouchableOpacity style={styles.cameraIcon}>
+              <Camera color="#FFF" size={14} />
+            </TouchableOpacity>
+>>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
           </View>
           <Text style={styles.profileName}>
             {userProfile?.name || user?.user_metadata?.name || "User"}
@@ -133,6 +151,7 @@ export default function ProfileScreen() {
             <Moon color={COLORS.primaryPink} size={24} fill={COLORS.primaryPink} />
           </View>
           <View style={styles.menuTextContainer}>
+<<<<<<< HEAD
             <Text style={styles.menuTitle}>
               {currentPhase.charAt(0).toUpperCase() + currentPhase.slice(1)} Phase
               {cycleStatus?.cycle_day ? ` — Day ${cycleStatus.cycle_day}` : ''}
@@ -140,6 +159,10 @@ export default function ProfileScreen() {
             <Text style={styles.menuSubtitle}>
               {cycleStatus?.skin_tip || 'Check your skin condition for this phase'}
             </Text>
+=======
+            <Text style={styles.menuTitle}>{currentPhase} Phase</Text>
+            <Text style={styles.menuSubtitle}>Check your skin condition for this phase</Text>
+>>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
           </View>
           <ChevronRight color="#CCC" size={20} />
         </TouchableOpacity>
@@ -219,6 +242,15 @@ const styles = StyleSheet.create({
     borderWidth: 1, borderColor: COLORS.primaryPink,
     backgroundColor: COLORS.white, justifyContent: 'center', alignItems: 'center',
   },
+<<<<<<< HEAD
+=======
+  cameraIcon: {
+    position: 'absolute', bottom: 0, right: 0,
+    backgroundColor: '#6D4C4C', width: 26, height: 26,
+    borderRadius: 13, justifyContent: 'center', alignItems: 'center',
+    borderWidth: 2, borderColor: COLORS.white,
+  },
+>>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
   profileName: { fontSize: 22, fontWeight: "700", color: COLORS.textMain },
   profileEmail: { fontSize: 14, color: COLORS.textSub },
   skinProfileCard: {

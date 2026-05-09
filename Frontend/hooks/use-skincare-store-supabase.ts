@@ -33,7 +33,10 @@ export const [SkincareStoreProvider, useSkincareStore] = createContextHook(() =>
   const [skinAnalyses, setSkinAnalyses] = useState<SkinAnalysis[]>([]);
   const [cycleData, setCycleData] = useState<CycleData[]>([]);
   const [recommendations, setRecommendations] = useState<any[]>([]);
+<<<<<<< HEAD
   const [cycleStatus, setCycleStatus] = useState<any>(null);
+=======
+>>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [useSupabase, setUseSupabase] = useState(isSupabaseConfigured);
 
@@ -78,6 +81,7 @@ export const [SkincareStoreProvider, useSkincareStore] = createContextHook(() =>
     }
   };
 
+<<<<<<< HEAD
   const refreshCycleStatus = async () => {
     if (!userId) return;
     try {
@@ -98,6 +102,8 @@ export const [SkincareStoreProvider, useSkincareStore] = createContextHook(() =>
     }
   };
 
+=======
+>>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
   const loadFromSupabase = async (currentUserId: string) => {
     try {
       // Load profile
@@ -138,7 +144,10 @@ export const [SkincareStoreProvider, useSkincareStore] = createContextHook(() =>
       console.error("Error loading from Supabase:", error);
       throw error;
     }
+<<<<<<< HEAD
     await refreshCycleStatus();
+=======
+>>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
   };
 
   // Load from AsyncStorage
@@ -327,11 +336,17 @@ export const [SkincareStoreProvider, useSkincareStore] = createContextHook(() =>
     getCurrentCyclePhase,
     getHealthScore,
     saveQuestionnaireAnswers,
+<<<<<<< HEAD
     refreshRecommendations,
     useSupabase, 
     recommendations, 
     cycleStatus,
     refreshCycleStatus,
+=======
+    refreshRecommendations, // NEW
+    useSupabase, 
+    recommendations, 
+>>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
   };
 });
 
