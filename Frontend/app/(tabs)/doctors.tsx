@@ -23,10 +23,7 @@ import {
   Navigation,
   X,
   ChevronRight,
-<<<<<<< HEAD
   ChevronLeft,
-=======
->>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
   Activity,
   CircleAlert,
   CircleCheck,
@@ -51,11 +48,7 @@ interface Dermatologist {
   specialty: string;
   rating: number;
   reviews: number;
-<<<<<<< HEAD
   distance: number;
-=======
-  distance: number; // km
->>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
   address: string;
   phone: string;
   availability: string;
@@ -69,7 +62,6 @@ interface Dermatologist {
 const MOCK_DERMATOLOGISTS: Dermatologist[] = [
   {
     id: "1",
-<<<<<<< HEAD
     name: "Dr. Zafar Ahmed",
     specialty: "Dermatologist",
     rating: 4.9,
@@ -118,102 +110,6 @@ const MOCK_DERMATOLOGISTS: Dermatologist[] = [
   },
 ];
 
-=======
-    name: "Dr. Ayesha Khan",
-    specialty: "Dermatologist & Cosmetologist",
-    rating: 4.8,
-    reviews: 156,
-    distance: 2.3,
-    address: "Gulberg III, Lahore",
-    phone: "+92 300 1234567",
-    availability: "Available Today",
-    experience: "12 years",
-    consultationFee: "Rs. 2,500",
-    services: ["Acne Treatment", "Anti-Aging", "Laser Therapy"],
-    latitude: 31.5204,
-    longitude: 74.3587,
-  },
-  {
-    id: "2",
-    name: "Dr. Muhammad Ali",
-    specialty: "Dermatologist",
-    rating: 4.6,
-    reviews: 89,
-    distance: 3.1,
-    address: "DHA Phase 5, Lahore",
-    phone: "+92 301 2345678",
-    availability: "Next Available: Tomorrow",
-    experience: "8 years",
-    consultationFee: "Rs. 2,000",
-    services: ["Skin Cancer Screening", "Psoriasis", "Eczema Care"],
-    latitude: 31.4794,
-    longitude: 74.4073,
-  },
-  {
-    id: "3",
-    name: "Dr. Fatima Sheikh",
-    specialty: "Dermatologist & Aesthetic Medicine",
-    rating: 4.9,
-    reviews: 203,
-    distance: 4.2,
-    address: "Johar Town, Lahore",
-    phone: "+92 302 3456789",
-    availability: "Available Today",
-    experience: "15 years",
-    consultationFee: "Rs. 3,000",
-    services: ["Botox", "Fillers", "Skin Rejuvenation", "Scar Treatment"],
-    latitude: 31.4697,
-    longitude: 74.3006,
-  },
-  {
-    id: "4",
-    name: "Dr. Hassan Ahmed",
-    specialty: "Pediatric Dermatologist",
-    rating: 4.7,
-    reviews: 124,
-    distance: 5.8,
-    address: "Model Town, Lahore",
-    phone: "+92 303 4567890",
-    availability: "Next Available: 2 days",
-    experience: "10 years",
-    consultationFee: "Rs. 2,200",
-    services: ["Pediatric Skin", "Birthmark Treatment", "Allergy Testing"],
-    latitude: 31.4822,
-    longitude: 74.3248,
-  },
-  {
-    id: "5",
-    name: "Dr. Zara Malik",
-    specialty: "Dermatologist & Hair Specialist",
-    rating: 4.5,
-    reviews: 167,
-    distance: 6.2,
-    address: "Cantt, Lahore",
-    phone: "+92 304 5678901",
-    availability: "Available Today",
-    experience: "9 years",
-    consultationFee: "Rs. 2,300",
-    services: ["Hair Loss Treatment", "Scalp Conditions", "Nail Disorders"],
-    latitude: 31.5497,
-    longitude: 74.3695,
-  },
-];
-
-function getDistanceFromLatLon(lat1: number, lon1: number, lat2: number, lon2: number): number {
-  const R = 6371;
-  const dLat = ((lat2 - lat1) * Math.PI) / 180;
-  const dLon = ((lon2 - lon1) * Math.PI) / 180;
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos((lat1 * Math.PI) / 180) *
-      Math.cos((lat2 * Math.PI) / 180) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return parseFloat((R * c).toFixed(1));
-}
-
->>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
 type FilterKey = "all" | "available" | "top-rated" | "nearest";
 type LocationStatus = "idle" | "requesting" | "granted" | "denied" | "error";
 
@@ -225,7 +121,6 @@ export default function DoctorsScreen() {
   const [selectedFilter, setSelectedFilter] = useState<FilterKey>("nearest");
   const [locationAddress, setLocationAddress] = useState<string>("");
   const [pulseAnim] = useState(new Animated.Value(1));
-<<<<<<< HEAD
   const [selectedDoctor, setSelectedDoctor] = useState<Dermatologist | null>(null);
 
   useEffect(() => {
@@ -235,10 +130,6 @@ export default function DoctorsScreen() {
     }
   }, [locationStatus]);
 
-=======
-
-  // Pulse animation for location icon
->>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
   useEffect(() => {
     if (locationStatus === "requesting") {
       const pulse = Animated.loop(
@@ -254,7 +145,6 @@ export default function DoctorsScreen() {
     }
   }, [locationStatus]);
 
-<<<<<<< HEAD
   const fetchDoctorsFromBackend = async (latitude: number, longitude: number) => {
     try {
       const AI_SERVICE_URL = process.env.EXPO_PUBLIC_AI_SERVICE_URL || "http://localhost:8000";
@@ -285,8 +175,6 @@ export default function DoctorsScreen() {
     }
   };
 
-=======
->>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
   const requestLocation = useCallback(async () => {
     setLocationStatus("requesting");
     setLoading(true);
@@ -300,11 +188,6 @@ export default function DoctorsScreen() {
       const loc = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
       const { latitude, longitude } = loc.coords;
       setLocationStatus("granted");
-<<<<<<< HEAD
-=======
-
-      // Reverse geocode for display
->>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
       try {
         const geo = await Location.reverseGeocodeAsync({ latitude, longitude });
         if (geo.length > 0) {
@@ -312,23 +195,10 @@ export default function DoctorsScreen() {
           setLocationAddress([g.district || g.subregion, g.city].filter(Boolean).join(", "));
         }
       } catch {}
-<<<<<<< HEAD
       await fetchDoctorsFromBackend(latitude, longitude);
     } catch (e) {
       setLocationStatus("error");
       setDoctors(MOCK_DERMATOLOGISTS);
-=======
-
-      // Calculate real distances from user's location
-      const updated = MOCK_DERMATOLOGISTS.map((d) => ({
-        ...d,
-        distance: getDistanceFromLatLon(latitude, longitude, d.latitude, d.longitude),
-      })).sort((a, b) => a.distance - b.distance);
-
-      setDoctors(updated);
-    } catch (e) {
-      setLocationStatus("error");
->>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
     } finally {
       setLoading(false);
     }
@@ -376,30 +246,14 @@ export default function DoctorsScreen() {
       />
     ));
 
-<<<<<<< HEAD
   // ── Location Permission Screen ─────────────────────────────────────────────
-=======
-  const handleCall = (phone: string, name: string) => {
-    const tel = `tel:${phone.replace(/\s/g, "")}`;
-    Alert.alert(`Call ${name}`, phone, [
-      { text: "Cancel", style: "cancel" },
-      { text: "Call", onPress: () => Linking.openURL(tel) },
-    ]);
-  };
-
-  // ─── Location Permission Screen ──────────────────────────────────────────────
->>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
   if (locationStatus === "idle") {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.permissionScreen}>
           <View style={styles.permissionIconWrapper}>
             <View style={styles.permissionIconBg}>
-<<<<<<< HEAD
               <MapPin color={COLORS.primaryPink} size={48} />
-=======
-              <MapPin color={COLORS.accentRed} size={48} />
->>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
             </View>
           </View>
           <Text style={styles.permissionTitle}>Find Dermatologists Near You</Text>
@@ -407,11 +261,7 @@ export default function DoctorsScreen() {
             Enable your location so Dermora can show you the closest skin specialists, sorted by distance.
           </Text>
           <View style={styles.permissionFeatures}>
-<<<<<<< HEAD
             {["Doctors sorted by distance", "Real-time availability", "One-tap booking"].map((f, i) => (
-=======
-            {["Doctors sorted by distance", "Real-time availability", "One-tap call & booking"].map((f, i) => (
->>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
               <View key={i} style={styles.permissionFeatureRow}>
                 <CircleCheck size={16} color={COLORS.green} />
                 <Text style={styles.permissionFeatureText}>{f}</Text>
@@ -422,11 +272,7 @@ export default function DoctorsScreen() {
             <Navigation size={18} color={COLORS.white} />
             <Text style={styles.enableBtnText}>Enable Location</Text>
           </TouchableOpacity>
-<<<<<<< HEAD
           <TouchableOpacity onPress={() => setLocationStatus("granted")}>
-=======
-          <TouchableOpacity onPress={() => { setLocationStatus("granted"); setDoctors(MOCK_DERMATOLOGISTS); }}>
->>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
             <Text style={styles.skipText}>Skip for now</Text>
           </TouchableOpacity>
         </View>
@@ -439,19 +285,11 @@ export default function DoctorsScreen() {
       <SafeAreaView style={styles.container}>
         <View style={styles.permissionScreen}>
           <Animated.View style={[styles.permissionIconBg, { transform: [{ scale: pulseAnim }] }]}>
-<<<<<<< HEAD
             <Navigation color={COLORS.primaryPink} size={44} />
           </Animated.View>
           <Text style={styles.permissionTitle}>Getting Your Location…</Text>
           <Text style={styles.permissionDesc}>Please wait while we find dermatologists near you.</Text>
           <ActivityIndicator color={COLORS.primaryPink} size="large" style={{ marginTop: 24 }} />
-=======
-            <Navigation color={COLORS.accentRed} size={44} />
-          </Animated.View>
-          <Text style={styles.permissionTitle}>Getting Your Location…</Text>
-          <Text style={styles.permissionDesc}>Please wait while we find dermatologists near you.</Text>
-          <ActivityIndicator color={COLORS.accentRed} size="large" style={{ marginTop: 24 }} />
->>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
         </View>
       </SafeAreaView>
     );
@@ -462,11 +300,7 @@ export default function DoctorsScreen() {
       <SafeAreaView style={styles.container}>
         <View style={styles.permissionScreen}>
           <View style={[styles.permissionIconBg, { backgroundColor: "#FFF3F3" }]}>
-<<<<<<< HEAD
             <CircleAlert color={COLORS.primaryPink} size={44} />
-=======
-            <CircleAlert color={COLORS.accentRed} size={44} />
->>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
           </View>
           <Text style={styles.permissionTitle}>Location Access Denied</Text>
           <Text style={styles.permissionDesc}>
@@ -475,11 +309,7 @@ export default function DoctorsScreen() {
           <TouchableOpacity style={styles.enableBtn} onPress={openSettings}>
             <Text style={styles.enableBtnText}>Open Settings</Text>
           </TouchableOpacity>
-<<<<<<< HEAD
           <TouchableOpacity onPress={() => setLocationStatus("granted")}>
-=======
-          <TouchableOpacity onPress={() => { setLocationStatus("granted"); setDoctors(MOCK_DERMATOLOGISTS); }}>
->>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
             <Text style={styles.skipText}>Continue without location</Text>
           </TouchableOpacity>
         </View>
@@ -487,7 +317,6 @@ export default function DoctorsScreen() {
     );
   }
 
-<<<<<<< HEAD
   // ── Sorry / Book Screen ────────────────────────────────────────────────────
   if (selectedDoctor) {
     return (
@@ -526,23 +355,13 @@ export default function DoctorsScreen() {
   // ── Main Doctors List ──────────────────────────────────────────────────────
   return (
     <SafeAreaView style={styles.container}>
-=======
-  // ─── Main Doctors List ────────────────────────────────────────────────────────
-  return (
-    <SafeAreaView style={styles.container}>
-      {/* Header */}
->>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
       <View style={styles.header}>
         <View style={styles.headerTop}>
           <View>
             <Text style={styles.headerTitle}>Dermatologists</Text>
             {locationAddress ? (
               <View style={styles.locationRow}>
-<<<<<<< HEAD
                 <MapPin size={12} color={COLORS.primaryPink} />
-=======
-                <MapPin size={12} color={COLORS.accentRed} />
->>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
                 <Text style={styles.locationText}>{locationAddress}</Text>
               </View>
             ) : (
@@ -550,17 +369,9 @@ export default function DoctorsScreen() {
             )}
           </View>
           <TouchableOpacity style={styles.refreshLocBtn} onPress={requestLocation}>
-<<<<<<< HEAD
             <Navigation size={16} color={COLORS.primaryPink} />
           </TouchableOpacity>
         </View>
-=======
-            <Navigation size={16} color={COLORS.accentRed} />
-          </TouchableOpacity>
-        </View>
-
-        {/* Search */}
->>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
         <View style={styles.searchBar}>
           <Search size={16} color={COLORS.textSub} />
           <TextInput
@@ -578,17 +389,12 @@ export default function DoctorsScreen() {
         </View>
       </View>
 
-<<<<<<< HEAD
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
         style={styles.filterRow}
         contentContainerStyle={{ paddingHorizontal: 20, alignItems: "center" }}
       >
-=======
-      {/* Filters */}
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filterRow} contentContainerStyle={{ paddingHorizontal: 20 }}>
->>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
         {filters.map((f) => (
           <TouchableOpacity
             key={f.key}
@@ -602,25 +408,14 @@ export default function DoctorsScreen() {
         ))}
       </ScrollView>
 
-<<<<<<< HEAD
-=======
-      {/* Results count */}
->>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
       <View style={styles.resultsRow}>
         <Activity size={14} color={COLORS.textSub} />
         <Text style={styles.resultsText}>{filteredDoctors.length} specialists found</Text>
       </View>
 
-<<<<<<< HEAD
       <ScrollView contentContainerStyle={styles.listContent} showsVerticalScrollIndicator={false}>
         {loading ? (
           <ActivityIndicator color={COLORS.primaryPink} size="large" style={{ marginTop: 60 }} />
-=======
-      {/* Doctors List */}
-      <ScrollView contentContainerStyle={styles.listContent} showsVerticalScrollIndicator={false}>
-        {loading ? (
-          <ActivityIndicator color={COLORS.accentRed} size="large" style={{ marginTop: 60 }} />
->>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
         ) : filteredDoctors.length === 0 ? (
           <View style={styles.emptyState}>
             <Text style={styles.emptyStateTitle}>No results found</Text>
@@ -629,10 +424,6 @@ export default function DoctorsScreen() {
         ) : (
           filteredDoctors.map((doc) => (
             <View key={doc.id} style={styles.card}>
-<<<<<<< HEAD
-=======
-              {/* Card Header */}
->>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
               <View style={styles.cardTop}>
                 <View style={styles.avatarCircle}>
                   <Text style={styles.avatarInitial}>{doc.name.split(" ")[1]?.[0] || "D"}</Text>
@@ -647,16 +438,11 @@ export default function DoctorsScreen() {
                   </View>
                 </View>
                 <View style={styles.distanceBadge}>
-<<<<<<< HEAD
                   <MapPin size={10} color={COLORS.textSub} />
-=======
-                  <MapPin size={10} color={COLORS.accentRed} />
->>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
                   <Text style={styles.distanceText}>{doc.distance} km</Text>
                 </View>
               </View>
 
-<<<<<<< HEAD
               <View style={styles.infoRow}>
                 <View style={styles.infoItem}>
                   <Clock size={13} color={COLORS.textSub} />
@@ -664,18 +450,6 @@ export default function DoctorsScreen() {
                     styles.infoText,
                     doc.availability.includes("Available Today") && { color: COLORS.green, fontWeight: "700" as const }
                   ]}>
-=======
-              {/* Info Row */}
-              <View style={styles.infoRow}>
-                <View style={styles.infoItem}>
-                  <Clock size={13} color={COLORS.textSub} />
-                  <Text
-                    style={[
-                      styles.infoText,
-                      doc.availability.includes("Available Today") && { color: COLORS.green, fontWeight: "700" as const },
-                    ]}
-                  >
->>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
                     {doc.availability}
                   </Text>
                 </View>
@@ -685,19 +459,11 @@ export default function DoctorsScreen() {
                 </View>
               </View>
 
-<<<<<<< HEAD
-=======
-              {/* Address */}
->>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
               <View style={styles.addressRow}>
                 <MapPin size={13} color={COLORS.textSub} />
                 <Text style={styles.addressText}>{doc.address}</Text>
               </View>
 
-<<<<<<< HEAD
-=======
-              {/* Services */}
->>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
               <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 10 }}>
                 {doc.services.map((s, i) => (
                   <View key={i} style={styles.serviceTag}>
@@ -706,31 +472,15 @@ export default function DoctorsScreen() {
                 ))}
               </ScrollView>
 
-<<<<<<< HEAD
-=======
-              {/* Footer */}
->>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
               <View style={styles.cardFooter}>
                 <View>
                   <Text style={styles.feeLabel}>Consultation</Text>
                   <Text style={styles.feeValue}>{doc.consultationFee}</Text>
                 </View>
-<<<<<<< HEAD
                 <TouchableOpacity style={styles.bookBtn} onPress={() => setSelectedDoctor(doc)}>
                   <Text style={styles.bookBtnText}>Book Appointment</Text>
                   <ChevronRight size={14} color={COLORS.white} />
                 </TouchableOpacity>
-=======
-                <View style={styles.actionBtns}>
-                  <TouchableOpacity style={styles.callBtn} onPress={() => handleCall(doc.phone, doc.name)}>
-                    <Phone size={15} color={COLORS.green} />
-                  </TouchableOpacity>
-                  <TouchableOpacity style={styles.bookBtn}>
-                    <Text style={styles.bookBtnText}>Book</Text>
-                    <ChevronRight size={14} color={COLORS.white} />
-                  </TouchableOpacity>
-                </View>
->>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
               </View>
             </View>
           ))
@@ -758,15 +508,9 @@ const styles = StyleSheet.create({
   permissionFeatureText: { fontSize: 14, color: COLORS.textMain, fontWeight: "500" },
   enableBtn: {
     flexDirection: "row", alignItems: "center", gap: 8,
-<<<<<<< HEAD
     backgroundColor: COLORS.primaryPink, paddingVertical: 16, paddingHorizontal: 40,
     borderRadius: 18, marginBottom: 16, width: "100%", justifyContent: "center",
     shadowColor: COLORS.primaryPink, shadowOpacity: 0.35, shadowRadius: 12, elevation: 5,
-=======
-    backgroundColor: COLORS.accentRed, paddingVertical: 16, paddingHorizontal: 40,
-    borderRadius: 18, marginBottom: 16, width: "100%", justifyContent: "center",
-    shadowColor: COLORS.accentRed, shadowOpacity: 0.35, shadowRadius: 12, elevation: 5,
->>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
   },
   enableBtnText: { color: COLORS.white, fontWeight: "800", fontSize: 16 },
   skipText: { color: COLORS.textSub, fontSize: 14, textDecorationLine: "underline" },
@@ -790,7 +534,6 @@ const styles = StyleSheet.create({
   searchInput: { flex: 1, fontSize: 14, color: COLORS.textMain },
 
   // Filters
-<<<<<<< HEAD
   filterRow: { marginTop: 8, marginBottom: 4, maxHeight: 44, flexShrink: 0 },
   filterChip: {
     paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20, marginRight: 8,
@@ -798,29 +541,13 @@ const styles = StyleSheet.create({
     height: 36, justifyContent: "center",
   },
   filterChipActive: { backgroundColor: COLORS.primaryPink, borderColor: COLORS.primaryPink },
-=======
-  filterRow: { marginTop: 12, marginBottom: 4 },
-  filterChip: {
-    paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20, marginRight: 8,
-    backgroundColor: COLORS.white, borderWidth: 1, borderColor: COLORS.cardBorder,
-  },
-  filterChipActive: { backgroundColor: COLORS.accentRed, borderColor: COLORS.accentRed },
->>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
   filterChipText: { fontSize: 13, fontWeight: "600", color: COLORS.textSub },
   filterChipTextActive: { color: COLORS.white },
 
   // Results
-<<<<<<< HEAD
   resultsRow: { flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 20, marginTop: 6, marginBottom: 6 },
   resultsText: { fontSize: 13, color: COLORS.textSub },
   listContent: { paddingHorizontal: 20, paddingBottom: 140, paddingTop: 4 },
-=======
-  resultsRow: { flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 20, marginVertical: 10 },
-  resultsText: { fontSize: 13, color: COLORS.textSub },
-
-  // List
-  listContent: { paddingHorizontal: 20, paddingBottom: 140 },
->>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
 
   // Empty
   emptyState: { alignItems: "center", marginTop: 60 },
@@ -838,11 +565,7 @@ const styles = StyleSheet.create({
     width: 52, height: 52, borderRadius: 26,
     backgroundColor: COLORS.secondaryPink, alignItems: "center", justifyContent: "center",
   },
-<<<<<<< HEAD
   avatarInitial: { fontSize: 20, fontWeight: "800", color: COLORS.textMain },
-=======
-  avatarInitial: { fontSize: 20, fontWeight: "800", color: COLORS.accentRed },
->>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
   docName: { fontSize: 16, fontWeight: "800", color: COLORS.textMain },
   docSpecialty: { fontSize: 12, color: COLORS.textSub, marginTop: 2, marginBottom: 5 },
   ratingRow: { flexDirection: "row", alignItems: "center", gap: 3 },
@@ -850,7 +573,6 @@ const styles = StyleSheet.create({
   reviewsText: { fontSize: 11, color: COLORS.textSub },
   distanceBadge: {
     flexDirection: "row", alignItems: "center", gap: 3,
-<<<<<<< HEAD
     backgroundColor: COLORS.secondaryPink, paddingHorizontal: 8, paddingVertical: 4, borderRadius: 10,
   },
   distanceText: { fontSize: 11, fontWeight: "700", color: COLORS.textMain },
@@ -864,28 +586,12 @@ const styles = StyleSheet.create({
     borderRadius: 10, marginRight: 6, borderWidth: 1, borderColor: COLORS.primaryPink,
   },
   serviceTagText: { fontSize: 11, color: COLORS.textMain, fontWeight: "600" },
-=======
-    backgroundColor: "#FFF0F3", paddingHorizontal: 8, paddingVertical: 4, borderRadius: 10,
-  },
-  distanceText: { fontSize: 11, fontWeight: "700", color: COLORS.accentRed },
-  infoRow: { flexDirection: "row", gap: 16, marginBottom: 8 },
-  infoItem: { flexDirection: "row", alignItems: "center", gap: 5 },
-  infoText: { fontSize: 12, color: COLORS.textSub },
-  addressRow: { flexDirection: "row", alignItems: "center", gap: 5 },
-  addressText: { fontSize: 12, color: COLORS.textSub, flex: 1 },
-  serviceTag: {
-    backgroundColor: COLORS.secondaryPink, paddingHorizontal: 10, paddingVertical: 4,
-    borderRadius: 10, marginRight: 6,
-  },
-  serviceTagText: { fontSize: 11, color: COLORS.accentRed, fontWeight: "600" },
->>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
   cardFooter: {
     flexDirection: "row", justifyContent: "space-between", alignItems: "center",
     marginTop: 14, paddingTop: 14, borderTopWidth: 1, borderTopColor: COLORS.secondaryPink,
   },
   feeLabel: { fontSize: 11, color: COLORS.textSub },
   feeValue: { fontSize: 15, fontWeight: "800", color: COLORS.textMain },
-<<<<<<< HEAD
   bookBtn: {
     flexDirection: "row", alignItems: "center", gap: 4,
     backgroundColor: COLORS.primaryPink, paddingHorizontal: 16, paddingVertical: 10, borderRadius: 12,
@@ -914,17 +620,3 @@ const styles = StyleSheet.create({
   },
   sorryNoteText: { color: COLORS.textSub, fontWeight: "500", fontSize: 13, textAlign: "center", lineHeight: 20 },
 });
-=======
-  actionBtns: { flexDirection: "row", gap: 8, alignItems: "center" },
-  callBtn: {
-    width: 40, height: 40, borderRadius: 12, borderWidth: 1.5, borderColor: COLORS.green,
-    alignItems: "center", justifyContent: "center", backgroundColor: COLORS.lightGreen,
-  },
-  bookBtn: {
-    flexDirection: "row", alignItems: "center", gap: 4,
-    backgroundColor: COLORS.accentRed, paddingHorizontal: 16, paddingVertical: 10, borderRadius: 12,
-    shadowColor: COLORS.accentRed, shadowOpacity: 0.3, shadowRadius: 8, elevation: 3,
-  },
-  bookBtnText: { color: COLORS.white, fontWeight: "700", fontSize: 13 },
-});
->>>>>>> 54f6c62251fec93ce5e2c879edf8b4a786094641
