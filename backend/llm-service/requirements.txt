@@ -1,0 +1,14 @@
+# Dermora LLM Service - Gemini Recommender
+ 
+# Web Framework
+fastapi==0.110.0
+uvicorn==0.27.1
+pydantic==2.6.3
+python-dotenv==1.0.1
+ 
+# Database
+supabase==2.3.6
+ 
+# Gemini - NEW SDK (not google-generativeai)
+google-genai==1.0.0
+ 
