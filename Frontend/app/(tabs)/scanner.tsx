@@ -11,7 +11,7 @@ import {
   Alert,
 } from "react-native";
 import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
-import { ChevronLeft, Smile, Clock, ShieldAlert, Sparkles } from "lucide-react-native";
+import { Camera, ChevronLeft, Smile, Clock, ShieldAlert, Sparkles } from "lucide-react-native";
 import Svg, { Circle } from "react-native-svg";
 import { router } from "expo-router";
 import { analyzeAndSaveSkinImage } from "../../lib/api";
@@ -93,7 +93,6 @@ export default function ScannerScreen() {
       setIsAnalyzing(true);
       setStatusText("Capturing image...");
 
-      // Check today's scan count
       const today = new Date().toDateString();
       const todayScans = skinAnalyses?.filter(
         s => new Date(s.date).toDateString() === today
@@ -128,7 +127,6 @@ export default function ScannerScreen() {
       const userId = user?.id || "00000000-0000-0000-0000-000000000000";
       const { data, error } = await analyzeAndSaveSkinImage(userId, photo.uri);
 
-      // Average score with today's previous scans
       let finalResult = data;
       if (data && todayScans.length > 0) {
         const allTodayScores = [...todayScans.map(s => s.healthScore), data.healthScore];
@@ -171,12 +169,21 @@ export default function ScannerScreen() {
   if (!permission?.granted) {
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.permissionContainer}>
-          <Text style={styles.headerTitle}>Camera Access</Text>
-          <Text style={styles.instructionText}>We need camera permission to scan your skin</Text>
-          <TouchableOpacity style={styles.primaryBtn} onPress={requestPermission}>
-            <Text style={styles.btnText}>Grant Permission</Text>
-          </TouchableOpacity>
+        <View style={styles.permissionScreen}>
+          <View style={styles.permissionIconWrapper}>
+            <View style={styles.permissionIconCircle}>
+              <Camera color={COLORS.primaryPink} size={48} />
+            </View>
+          </View>
+          <Text style={styles.permissionTitle}>Camera Access Required</Text>
+          <Text style={styles.permissionDescription}>
+            Dermora needs access to your camera to analyze your skin condition and provide personalized recommendations.
+          </Text>
+          <View style={styles.permissionFooter}>
+            <TouchableOpacity style={styles.primaryBtn} onPress={requestPermission}>
+              <Text style={styles.btnText}>Grant Camera Access</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </SafeAreaView>
     );
@@ -219,20 +226,18 @@ export default function ScannerScreen() {
     return (
       <View style={styles.cameraContainer}>
         <CameraView style={styles.camera} facing={facing} ref={cameraRef}>
-          <SafeAreaView style={{ flex: 1 }}>
-            <View style={styles.overlayContainer}>
-              <View style={styles.faceDottedBorder} />
-              <View style={styles.loaderContainer}>
-                <Animated.View style={{ transform: [{ rotate: spin }] }}>
-                  <Svg height="60" width="60" viewBox="0 0 100 100">
-                    <Circle cx="50" cy="50" r="40" stroke="white" strokeWidth="6"
-                      strokeDasharray="180" strokeLinecap="round" fill="none" />
-                  </Svg>
-                </Animated.View>
-                <Text style={styles.statusText}>{statusText}</Text>
-              </View>
+          <View style={styles.overlayContainer}>
+            <View style={styles.faceDottedBorder} />
+            <View style={styles.loaderContainer}>
+              <Animated.View style={{ transform: [{ rotate: spin }] }}>
+                <Svg height="60" width="60" viewBox="0 0 100 100">
+                  <Circle cx="50" cy="50" r="40" stroke="white" strokeWidth="6"
+                    strokeDasharray="180" strokeLinecap="round" fill="none" />
+                </Svg>
+              </Animated.View>
+              <Text style={styles.statusText}>{statusText}</Text>
             </View>
-          </SafeAreaView>
+          </View>
         </CameraView>
       </View>
     );
@@ -240,8 +245,6 @@ export default function ScannerScreen() {
 
   const healthScore = analysisResult?.healthScore || 70;
   const concerns = analysisResult?.concerns || ["normal_skin"];
-  const primaryCondition = concerns[0] || "normal_skin";
-  const confidenceScores = analysisResult?.confidenceScores || {};
   const radius = 80;
   const circumference = 2 * Math.PI * radius;
   const strokeOffset = circumference * (1 - healthScore / 100);
@@ -257,7 +260,7 @@ export default function ScannerScreen() {
       </View>
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         <View style={styles.resultCircleSection}>
-          <Svg height="200" width="200" viewBox="0 0 200 200">
+          <Svg height={200} width={200} viewBox="0 0 200 200">
             <Circle cx="100" cy="100" r={radius} stroke="#FFF0F3" strokeWidth="15" fill="none" />
             <Circle cx="100" cy="100" r={radius} stroke={COLORS.primaryPink} strokeWidth="15"
               strokeDasharray={circumference} strokeDashoffset={strokeOffset}
@@ -272,7 +275,7 @@ export default function ScannerScreen() {
         <View style={styles.concernsSection}>
           <Text style={styles.sectionTitle}>Detected Concerns</Text>
           {concerns.map((condition: string) => {
-            const confidence = confidenceScores[condition] || 0.5;
+            const confidence = analysisResult?.confidenceScores?.[condition] || 0.5;
             const percentage = Math.round(confidence * 100);
             return (
               <ConcernRow
@@ -332,54 +335,218 @@ const ConcernRow = ({ label, value }: { label: string; value: string }) => (
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.background },
-  permissionContainer: { flex: 1, justifyContent: "center", alignItems: "center", padding: 20 },
-  header: { flexDirection: "row", alignItems: "center", padding: 20 },
-  headerTitle: { fontSize: 20, fontWeight: "700", color: COLORS.textMain, textAlign: "center", flex: 1 },
-  introContent: { paddingHorizontal: 30, paddingBottom: 40 },
-  introHero: { fontSize: 22, color: COLORS.textMain, textAlign: "center", fontWeight: "500", marginVertical: 30, lineHeight: 30 },
-  instructionCard: { backgroundColor: COLORS.white, borderRadius: 25, padding: 25, marginBottom: 20, elevation: 2 },
-  cardHeader: { fontSize: 20, fontWeight: "700", color: COLORS.textMain, textAlign: "center", marginBottom: 25 },
-  instructionRow: { flexDirection: "row", alignItems: "center", marginBottom: 15 },
-  iconCircle: { width: 36, height: 36, borderRadius: 10, backgroundColor: COLORS.primaryPink, justifyContent: "center", alignItems: "center", marginRight: 15 },
-  instructionText: { fontSize: 16, color: COLORS.textSub },
+  permissionScreen: { 
+    flex: 1, 
+    justifyContent: "center", 
+    alignItems: "center", 
+    paddingHorizontal: 40,
+    backgroundColor: COLORS.background 
+  },
+  permissionIconWrapper: {
+    marginBottom: 40,
+  },
+  permissionIconCircle: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: COLORS.white,
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: COLORS.primaryPink,
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.15,
+    shadowRadius: 20,
+    elevation: 8,
+  },
+  permissionTitle: { 
+    fontSize: 26, 
+    fontWeight: "800", 
+    color: COLORS.textMain, 
+    textAlign: "center",
+    marginBottom: 16 
+  },
+  permissionDescription: { 
+    fontSize: 16, 
+    color: COLORS.textSub, 
+    textAlign: "center", 
+    lineHeight: 24,
+    marginBottom: 40 
+  },
+  permissionFooter: {
+    width: '100%',
+    paddingBottom: 120, 
+  },
+  header: { 
+    flexDirection: "row", 
+    alignItems: "center", 
+    paddingHorizontal: 20, 
+    paddingTop: 10,
+    paddingBottom: 10,
+  },
+  headerTitle: { 
+    fontSize: 22, 
+    fontWeight: "800", 
+    color: COLORS.textMain, 
+    textAlign: "center", 
+    flex: 1 
+  },
+  introContent: { 
+    paddingHorizontal: 25, 
+    paddingBottom: 160, 
+  },
+  introHero: { 
+    fontSize: 24, 
+    color: COLORS.textMain, 
+    textAlign: "center", 
+    fontWeight: "700", 
+    marginVertical: 35, 
+    lineHeight: 32 
+  },
+  instructionCard: { 
+    backgroundColor: COLORS.white, 
+    borderRadius: 30, 
+    padding: 25, 
+    marginBottom: 25,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.05,
+    shadowRadius: 15,
+    elevation: 3,
+  },
+  cardHeader: { 
+    fontSize: 20, 
+    fontWeight: "800", 
+    color: COLORS.textMain, 
+    textAlign: "center", 
+    marginBottom: 25 
+  },
+  instructionRow: { 
+    flexDirection: "row", 
+    alignItems: "center", 
+    marginBottom: 18 
+  },
+  iconCircle: { 
+    width: 40, 
+    height: 40, 
+    borderRadius: 12, 
+    backgroundColor: COLORS.primaryPink, 
+    justifyContent: "center", 
+    alignItems: "center", 
+    marginRight: 15 
+  },
+  instructionText: { 
+    fontSize: 16, 
+    color: COLORS.textSub,
+    fontWeight: "500",
+  },
   cameraContainer: { flex: 1, backgroundColor: "#000" },
   camera: { flex: 1 },
-  overlayContainer: { flex: 1, alignItems: "center", justifyContent: "center" },
-  faceDottedBorder: { width: width * 0.75, height: height * 0.5, borderWidth: 3, borderColor: "#FFF", borderStyle: "dashed", borderRadius: width * 0.4 },
-  loaderContainer: { position: "absolute", bottom: 100, alignItems: "center" },
-  statusText: { color: "#FFF", fontSize: 16, marginTop: 10, fontWeight: "600" },
-  scrollContent: { paddingBottom: 120 },
-  resultCircleSection: { marginTop: 20, position: "relative", alignItems: "center" },
-  resultTextOverlay: { position: "absolute", top: 75, alignItems: "center" },
-  resultPercent: { fontSize: 42, fontWeight: "700", color: COLORS.textMain },
-  resultLabel: { fontSize: 14, color: COLORS.textMain, fontWeight: "500" },
-  concernsSection: { width: "100%", paddingHorizontal: 25, marginTop: 30 },
-  sectionTitle: { fontSize: 20, fontWeight: "700", color: COLORS.textMain, marginBottom: 20 },
-  concernCard: { backgroundColor: COLORS.secondaryPink, flexDirection: "row", justifyContent: "space-between", padding: 18, borderRadius: 15, marginBottom: 12 },
-  concernLabel: { fontSize: 16, color: COLORS.textMain, fontWeight: "500" },
-  concernValue: { fontSize: 16, color: COLORS.textMain, fontWeight: "700" },
-  tipCard: { backgroundColor: COLORS.white, padding: 15, borderRadius: 12, marginBottom: 10, elevation: 1 },
-  tipText: { fontSize: 14, color: COLORS.textSub, lineHeight: 20 },
-  primaryBtn: { backgroundColor: COLORS.primaryPink, padding: 18, borderRadius: 15, alignItems: "center", marginTop: 20 },
-  btnText: { color: COLORS.white, fontSize: 18, fontWeight: "700" },
-  scanLimitBadge: {
-    backgroundColor: COLORS.secondaryPink,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 12,
+  overlayContainer: { flex: 1, alignItems: "center", justifyContent: "center", paddingBottom: 50 },
+  faceDottedBorder: { 
+    width: width * 0.75, 
+    height: width * 0.75 * 1.35, 
+    borderWidth: 3, 
+    borderColor: "#FFF", 
+    borderStyle: "dashed", 
+    borderRadius: width * 0.4 
+  },
+  loaderContainer: { position: "absolute", bottom: 80, alignItems: "center", width: "100%" },
+  statusText: { color: "#FFF", fontSize: 16, marginTop: 15, fontWeight: "600", textShadowColor: 'rgba(0, 0, 0, 0.75)', textShadowOffset: {width: -1, height: 1}, textShadowRadius: 10 },
+  scrollContent: { paddingHorizontal: 20, paddingBottom: 160 },
+  resultCircleSection: { 
+    marginTop: 30, 
+    width: 200, 
+    height: 200, 
+    alignSelf: 'center', 
+    position: "relative",
+  },
+  resultTextOverlay: { 
+    position: "absolute", 
+    top: 0, left: 0, right: 0, bottom: 0, 
+    alignItems: "center", 
+    justifyContent: "center" 
+  },
+  resultPercent: { 
+    fontSize: 48, 
+    fontWeight: "900", 
+    color: COLORS.textMain, 
+    lineHeight: 52 
+  },
+  resultLabel: { 
+    fontSize: 14, 
+    color: COLORS.textSub, 
+    fontWeight: "700",
+    textTransform: "uppercase",
+    letterSpacing: 1,
+  },
+  concernsSection: { 
+    width: "100%", 
+    marginTop: 40 
+  },
+  sectionTitle: { 
+    fontSize: 22, 
+    fontWeight: "800", 
+    color: COLORS.textMain, 
+    marginBottom: 20 
+  },
+  concernCard: { 
+    backgroundColor: COLORS.white, 
+    flexDirection: "row", 
+    justifyContent: "space-between", 
+    padding: 20, 
+    borderRadius: 20, 
     marginBottom: 15,
+    borderWidth: 1,
+    borderColor: COLORS.secondaryPink,
+  },
+  concernLabel: { fontSize: 17, color: COLORS.textMain, fontWeight: "600" },
+  concernValue: { fontSize: 17, color: COLORS.primaryPink, fontWeight: "800" },
+  tipCard: { 
+    backgroundColor: "rgba(255, 182, 193, 0.1)", 
+    padding: 20, 
+    borderRadius: 20, 
+    marginBottom: 12,
+  },
+  tipText: { fontSize: 15, color: COLORS.textMain, lineHeight: 22, fontWeight: "500" },
+  primaryBtn: { 
+    backgroundColor: COLORS.primaryPink, 
+    paddingVertical: 18, 
+    borderRadius: 20, 
+    alignItems: "center", 
+    marginTop: 10,
+    shadowColor: COLORS.primaryPink,
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.3,
+    shadowRadius: 20,
+    elevation: 8,
+  },
+  btnText: { color: COLORS.white, fontSize: 18, fontWeight: "800" },
+  scanLimitBadge: {
+    backgroundColor: "rgba(74, 50, 50, 0.05)",
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 15,
+    marginBottom: 20,
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: "rgba(74, 50, 50, 0.1)",
   },
   scanLimitText: {
     fontSize: 14,
     color: COLORS.textSub,
-    fontWeight: '600',
+    fontWeight: '700',
   },
   dailyLimitCard: {
-    backgroundColor: COLORS.secondaryPink, marginHorizontal: 25, padding: 25,
-    borderRadius: 20, alignItems: 'center', marginTop: 10, gap: 10,
+    backgroundColor: COLORS.white, 
+    padding: 30,
+    borderRadius: 30, 
+    alignItems: 'center', 
+    marginTop: 20, 
+    gap: 15,
+    borderWidth: 2,
+    borderColor: COLORS.secondaryPink,
   },
-  dailyLimitEmoji: { fontSize: 40 },
-  dailyLimitTitle: { fontSize: 18, fontWeight: '800', color: COLORS.textMain },
-  dailyLimitSub: { fontSize: 14, color: COLORS.textSub, textAlign: 'center', lineHeight: 20 },
+  dailyLimitEmoji: { fontSize: 50, marginBottom: 10 },
+  dailyLimitTitle: { fontSize: 22, fontWeight: '900', color: COLORS.textMain },
+  dailyLimitSub: { fontSize: 15, color: COLORS.textSub, textAlign: 'center', lineHeight: 24, fontWeight: "500" },
 });
